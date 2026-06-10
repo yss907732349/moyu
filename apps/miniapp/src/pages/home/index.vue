@@ -1086,7 +1086,7 @@ function createSurvivalCategories(categoryMap = new Map<string, number>()): Surv
   border-width: 3rpx !important;
   border-color: rgba(185, 154, 100, 0.62) !important;
   background:
-    linear-gradient(90deg, rgba(255, 253, 248, 0.98) 0%, rgba(255, 250, 241, 0.84) 100%),
+    linear-gradient(90deg, rgba(255, 248, 235, 0.98) 0%, rgba(255, 242, 220, 0.86) 100%),
     var(--camp-card) !important;
   box-shadow:
     0 0 0 2rpx rgba(255, 253, 248, 0.94),
@@ -1094,6 +1094,18 @@ function createSurvivalCategories(categoryMap = new Map<string, number>()): Surv
     var(--camp-inset-highlight),
     var(--camp-inset-lowlight),
     0 16rpx 28rpx rgba(17, 24, 39, 0.18) !important;
+}
+
+.hero-card-office::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  content: "";
+  border-radius: 15rpx;
+  background:
+    linear-gradient(90deg, rgba(239, 180, 116, 0.1) 0%, rgba(236, 169, 104, 0.075) 58%, rgba(218, 144, 82, 0.055) 100%),
+    radial-gradient(circle at 26% 34%, rgba(255, 218, 165, 0.12) 0%, rgba(255, 218, 165, 0) 62%);
 }
 
 .hero-card-hidden {
