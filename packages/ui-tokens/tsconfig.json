@@ -1,0 +1,10 @@
+{
+  "extends": "@moyuxia/config/tsconfig/base",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"]
+}

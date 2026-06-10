@@ -1,0 +1,2 @@
+ALTER TABLE `UserGrowthProfile`
+  ADD COLUMN `jobTitle` VARCHAR(191) NOT NULL DEFAULT '';

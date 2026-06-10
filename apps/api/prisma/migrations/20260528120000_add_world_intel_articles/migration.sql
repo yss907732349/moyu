@@ -1,0 +1,25 @@
+CREATE TABLE `WorldIntelArticle` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `summary` TEXT NOT NULL,
+    `body` TEXT NOT NULL,
+    `source` JSON NULL,
+    `coverImageUrl` TEXT NULL,
+    `coverImageKey` VARCHAR(191) NULL,
+    `status` VARCHAR(191) NOT NULL,
+    `publishedAt` DATETIME(3) NULL,
+    `sortOrder` INTEGER NOT NULL DEFAULT 0,
+    `allowLike` BOOLEAN NOT NULL DEFAULT true,
+    `allowCommunityQuote` BOOLEAN NOT NULL DEFAULT true,
+    `quotePrompt` TEXT NULL,
+    `legacyDailyContentItemId` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `WorldIntelArticle_legacyDailyContentItemId_key`(`legacyDailyContentItemId`),
+    INDEX `WorldIntelArticle_status_publishedAt_idx`(`status`, `publishedAt`),
+    INDEX `WorldIntelArticle_status_updatedAt_idx`(`status`, `updatedAt`),
+    INDEX `WorldIntelArticle_publishedAt_idx`(`publishedAt`),
+    INDEX `WorldIntelArticle_updatedAt_idx`(`updatedAt`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

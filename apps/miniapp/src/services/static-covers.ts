@@ -1,0 +1,9 @@
+export const DAILY_COVER_IMAGE = "/static/covers/daily-cover.jpg";
+export const SUPPLY_COVER_IMAGE = "/static/covers/supply-cover.jpg";
+export const WORLD_INTEL_COVER_IMAGE = "/static/daily-content/world-intel-cover.jpg";
+export const ABSURD_CASEFILE_COVER_IMAGE = "/static/daily-content/absurd-casefile-cover.jpg";
+export const SURVIVAL_LEDGER_HERO_IMAGE = "/static/ledger/survival-ledger-hero.jpg";
+export const SURVIVAL_LEDGER_BOARD_IMAGE = "/static/ledger/survival-ledger-board-home-v2.jpg";
+export const SURVIVAL_CANTEEN_CARD_IMAGE = "/static/ledger/survival-canteen-card.jpg";
+export const SURVIVAL_AFTERNOON_CARD_IMAGE = "/static/ledger/survival-afternoon-card.jpg";
+export const SURVIVAL_COMMUTE_CARD_IMAGE = "/static/ledger/survival-commute-card.jpg";

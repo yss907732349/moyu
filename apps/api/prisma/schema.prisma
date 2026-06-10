@@ -1,0 +1,722 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model WorkProfile {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  salaryMode            String
+  monthlyAmount         Decimal  @db.Decimal(12, 2)
+  currency              String
+  workStartTime         String
+  workEndTime           String
+  workBreaks            Json
+  workdayRuleType       String
+  workdayWeekdays       Json
+  paydayDayOfMonth      Int
+  paydayWeekendStrategy String
+  hideModeEnabled       Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model AppUser {
+  id        String   @id @default(cuid())
+  privacyPolicyVersion String?
+  communityAgreementVersion String?
+  privacyConsentAcceptedAt DateTime?
+  privacyConsentScene String?
+  phoneVerified Boolean @default(false)
+  phoneVerifiedAt DateTime?
+  phoneVerificationSource String?
+  phoneNumberHash String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wechatIdentities WechatIdentity[]
+  growthProfile    UserGrowthProfile?
+  checkins         DailyCheckin[]
+  accountingBills  AccountingBill[]
+  survivalBills    SurvivalLedgerBill[]
+  supplyClicks     SupplyClick[]
+  communityPosts   CommunityPost[]
+  communityComments CommunityComment[]
+  communityReplies CommunityReply[]
+  communityMediaAssets CommunityMediaAsset[]
+  communityNotifications CommunityNotification[]
+  communityLikes   CommunityPostLike[]
+  communityFavorites CommunityPostFavorite[]
+  communityFollowing CommunityFollow[] @relation("CommunityFollowFollower")
+  communityFollowers CommunityFollow[] @relation("CommunityFollowFollowing")
+  communityReports CommunityReport[]
+  communityGovernance CommunityUserGovernance?
+  communityGovernanceAudits CommunityGovernanceAudit[]
+  dailyContentLikes DailyContentItemLike[]
+  dailyContentComments DailyContentArticleComment[]
+}
+
+model WechatIdentity {
+  id         String   @id @default(cuid())
+  userId     String
+  openid     String   @unique
+  unionid    String?
+  sessionKey String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user AppUser @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([unionid])
+}
+
+model UserGrowthProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  publicProfileId   String?  @unique
+  professionType    String
+  jobTitle          String   @default("")
+  faction           String
+  displayName       String
+  avatarKey         String
+  level             Int      @default(1)
+  totalExperience   Int      @default(0)
+  hiddenCoins       Int      @default(0)
+  energy            Int      @default(0)
+  checkinStreak     Int      @default(0)
+  lastCheckinDate   String?
+  titleKey          String
+  equippedBadgeKeys Json
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user AppUser @relation(fields: [userId], references: [id])
+
+  @@index([faction])
+}
+
+model DailyCheckin {
+  id           String   @id @default(cuid())
+  userId       String
+  businessDate String
+  reward       Json
+  createdAt    DateTime @default(now())
+
+  user AppUser @relation(fields: [userId], references: [id])
+
+  @@unique([userId, businessDate])
+  @@index([userId])
+}
+
+model AccountingBill {
+  id             String   @id @default(cuid())
+  userId         String
+  direction      String
+  amountMinor    Int
+  currency       String
+  categoryKey    String
+  occurredOn     String
+  status         String
+  source         String
+  remark         String?
+  sourceProvider String?
+  sourceOrderId  String?
+  sourceStatus   String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user AppUser @relation(fields: [userId], references: [id])
+
+  @@index([userId, occurredOn])
+  @@index([userId, status])
+  @@index([sourceProvider, sourceOrderId])
+}
+
+model SurvivalLedgerBill {
+  id                      String   @id @default(cuid())
+  userId                  String
+  sourceProvider          String
+  sourceOrderId           String
+  sourceStatus            String
+  amountMinor             Int
+  currency                String
+  categoryKey             String
+  displayTitle            String
+  occurredAt              DateTime
+  occurredOn              String
+  displayStatus           String
+  countsTowardConsumption Boolean  @default(false)
+  displayStatusReason     String?  @db.Text
+  stateHistory            Json?
+  ledgerStateReason       String?
+  productTitle            String?
+  productCategory         String?
+  merchantTags            Json?
+  commuteDistanceMeters   Int?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  user AppUser @relation(fields: [userId], references: [id])
+
+  @@unique([sourceProvider, sourceOrderId])
+  @@index([userId, occurredOn])
+  @@index([userId, categoryKey])
+  @@index([userId, displayStatus])
+}
+
+model SupplyItem {
+  id                 String   @id
+  title              String
+  description        String   @db.Text
+  sectionKey         String
+  coverImageUrl      String?  @db.Text
+  actionText         String
+  sortOrder          Int
+  status             String
+  validFrom          DateTime?
+  validUntil         DateTime?
+  defaultCategoryKey String
+  jutuikeActId       String
+  jutuikeSourceName  String
+  internalNote       String?  @db.Text
+  groupKey           String   @default("general")
+  userVisibleTags    Json
+  displayPriority    Int      @default(50)
+  recommendationTimeWindows Json
+  displayWorkdayRule String   @default("workdays_only")
+  attributionWindowHours Int  @default(168)
+  transferExpiresMinutes Int  @default(30)
+  clickDedupeWindowSeconds Int @default(300)
+  fallbackStrategy   String   @default("none")
+  fallbackTargetType String?
+  fallbackUrl        String?  @db.Text
+  fallbackMiniappAppId String?
+  fallbackMiniappPath String? @db.Text
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  clicks SupplyClick[]
+  transferAttempts SupplyTransferAttempt[]
+
+  @@index([sectionKey, status, sortOrder])
+  @@index([status, groupKey, displayPriority])
+  @@index([jutuikeActId])
+}
+
+model SupplyClick {
+  id                 String   @id @default(cuid())
+  userId             String
+  supplyItemId       String
+  sectionKey         String
+  defaultCategoryKey String
+  jutuikeActId       String
+  sid                String   @unique
+  sidDigest          String?  @unique
+  sidMasked          String
+  jumpStatus         String
+  failureReason      String?  @db.Text
+  transferExpiresAt  DateTime?
+  attributionWindowEndsAt DateTime?
+  jumpTargetType     String?
+  jumpTargetExpiresAt DateTime?
+  fallbackAttributable Boolean @default(false)
+  reusedFromClickId  String?
+  clickedAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user AppUser    @relation(fields: [userId], references: [id])
+  item SupplyItem @relation(fields: [supplyItemId], references: [id])
+  transferAttempts SupplyTransferAttempt[]
+
+  @@index([userId, clickedAt])
+  @@index([supplyItemId, clickedAt])
+  @@index([jutuikeActId])
+  @@index([sidDigest])
+}
+
+model SupplyTransferAttempt {
+  id                   String   @id @default(cuid())
+  clickId              String
+  supplyItemId         String
+  sidDigest            String?
+  sidMasked            String
+  status               String
+  targetType           String?
+  targetPayload        Json?
+  usedFallback         Boolean  @default(false)
+  fallbackAttributable Boolean  @default(false)
+  failureReason        String?  @db.Text
+  targetExpiresAt      DateTime?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  click SupplyClick @relation(fields: [clickId], references: [id])
+  item  SupplyItem  @relation(fields: [supplyItemId], references: [id])
+
+  @@index([clickId, createdAt])
+  @@index([supplyItemId, createdAt])
+  @@index([sidDigest])
+  @@index([status, createdAt])
+}
+
+model SupplyOrderSync {
+  id               String   @id @default(cuid())
+  sourceProvider   String   @default("jutuike")
+  sourceOrderId    String
+  sid              String?
+  sidDigest        String?
+  sidMasked        String?
+  actId            String?
+  brandId          String?
+  sourceStatus     String
+  mappedStatus     String   @default("unknown")
+  amountMinor      Int
+  paidAt           DateTime?
+  matched          Boolean  @default(false)
+  matchedClickId   String?
+  matchedSupplyItemId String?
+  ledgerSyncStatus String
+  ledgerAction     String   @default("skipped")
+  ledgerBillId     String?
+  attributionFailureReason String?
+  exceptionType    String?
+  failureReason    String?  @db.Text
+  failureExplanation String? @db.Text
+  statusHistory    Json?
+  rawSummary       Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([sourceProvider, sourceOrderId])
+  @@index([sid])
+  @@index([sidDigest])
+  @@index([actId])
+  @@index([ledgerSyncStatus])
+  @@index([exceptionType])
+  @@index([matchedSupplyItemId])
+}
+
+model CommunityPost {
+  id                    String   @id @default(cuid())
+  authorUserId          String
+  sectionKey            String
+  authorFaction         String
+  title                 String
+  body                  String   @db.Text
+  imageKeys             Json
+  authorSnapshot        Json
+  status                String
+  approvedAt            DateTime?
+  reviewNote            String?
+  riskFlags             Json?
+  moderation            Json?
+  dailyContentQuote     Json?
+  ipLocationLabel       String?
+  ipLocationCountryOrRegion String?
+  ipLocationProvince    String?
+  ipLocationSource      String?
+  ipLocationStatus      String?
+  ipLocationResolvedAt  DateTime?
+  ipLocationFailureReason String? @db.Text
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  author    AppUser @relation(fields: [authorUserId], references: [id])
+  comments  CommunityComment[]
+  replies   CommunityReply[]
+  mediaAssets CommunityMediaAsset[]
+  notifications CommunityNotification[]
+  likes     CommunityPostLike[]
+  favorites CommunityPostFavorite[]
+  reports   CommunityReport[]
+
+  @@index([sectionKey, status, approvedAt])
+  @@index([authorUserId, status])
+  @@index([status, createdAt])
+  @@index([sectionKey, status, createdAt])
+  @@index([authorUserId, createdAt])
+  @@index([ipLocationStatus])
+}
+
+model CommunityMediaAsset {
+  id           String   @id @default(cuid())
+  ownerUserId  String
+  usage        String
+  url          String   @db.Text
+  thumbnailUrl String?  @db.Text
+  status       String
+  postId       String?
+  contentSecurityStatus String @default("not_required")
+  contentSecurityTraceIdDigest String?
+  contentSecurityTraceIdMasked String?
+  contentSecuritySummary Json?
+  contentSecurityCheckedAt DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  owner AppUser        @relation(fields: [ownerUserId], references: [id])
+  post  CommunityPost? @relation(fields: [postId], references: [id])
+
+  @@index([ownerUserId, status])
+  @@index([postId, status])
+  @@index([contentSecurityStatus])
+  @@index([contentSecurityTraceIdDigest])
+}
+
+model DailyContentIssue {
+  id                 String   @id @default(cuid())
+  businessDate       String
+  title              String
+  homeSummary        String   @db.Text
+  status             String
+  scheduledPublishAt DateTime?
+  publishedAt        DateTime?
+  reviewedAt         DateTime?
+  reviewedBy         String?
+  reviewNote         String?  @db.Text
+  aiDraftMetadata    Json?
+  internalRiskTags   Json?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  sections DailyContentSection[]
+
+  @@index([businessDate, status])
+  @@index([status, publishedAt])
+}
+
+model DailyContentSection {
+  id        String @id @default(cuid())
+  issueId   String
+  sectionKey String
+  title     String
+  summary   String @db.Text
+  illustrationKey String?
+  sortOrder Int
+
+  issue DailyContentIssue @relation(fields: [issueId], references: [id])
+  items DailyContentItem[]
+
+  @@unique([issueId, sectionKey])
+  @@index([issueId, sortOrder])
+}
+
+model DailyContentItem {
+  id                  String  @id @default(cuid())
+  sectionId           String
+  issueId             String
+  sectionKey          String
+  title               String
+  summary             String  @db.Text
+  body                String  @db.Text
+  source              Json?
+  allowLike           Boolean @default(true)
+  allowCommunityQuote Boolean @default(true)
+  quotePrompt         String? @db.Text
+  sortOrder           Int
+
+  section DailyContentSection @relation(fields: [sectionId], references: [id])
+  likes   DailyContentItemLike[]
+  comments DailyContentArticleComment[]
+
+  @@index([issueId, sectionKey])
+  @@index([sectionId, sortOrder])
+}
+
+model WorldIntelArticle {
+  id                       String   @id @default(cuid())
+  title                    String
+  summary                  String   @db.Text
+  body                     String   @db.Text
+  source                   Json?
+  coverImageUrl            String?  @db.Text
+  coverImageKey            String?
+  status                   String
+  publishedAt              DateTime?
+  sortOrder                Int      @default(0)
+  allowLike                Boolean  @default(true)
+  allowCommunityQuote      Boolean  @default(true)
+  quotePrompt              String?  @db.Text
+  legacyDailyContentItemId String?  @unique
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([status, updatedAt])
+  @@index([publishedAt])
+  @@index([updatedAt])
+}
+
+model DailyContentArticleComment {
+  id             String   @id @default(cuid())
+  articleId      String
+  authorUserId   String
+  body           String   @db.Text
+  authorSnapshot Json
+  status         String
+  approvedAt     DateTime?
+  reviewedAt     DateTime?
+  reviewedBy     String?
+  reviewNote     String?  @db.Text
+  moderation     Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  article DailyContentItem @relation(fields: [articleId], references: [id])
+  author  AppUser          @relation(fields: [authorUserId], references: [id])
+
+  @@index([articleId, status, approvedAt])
+  @@index([authorUserId, status])
+  @@index([status, createdAt])
+}
+
+model DailyContentSourceInput {
+  id           String   @id @default(cuid())
+  issueId      String
+  sectionKey   String
+  sourceTitle  String?
+  sourceName   String?
+  sourceUrl    String?
+  publishedAt  String?
+  collectedAt  String?
+  rawInput      Json?
+  createdAt     DateTime @default(now())
+
+  @@index([issueId, sectionKey])
+}
+
+model DailyContentItemLike {
+  id        String   @id @default(cuid())
+  itemId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  item DailyContentItem @relation(fields: [itemId], references: [id])
+  user AppUser          @relation(fields: [userId], references: [id])
+
+  @@unique([itemId, userId])
+  @@index([userId])
+}
+
+model CommunityComment {
+  id             String   @id @default(cuid())
+  postId         String
+  authorUserId   String
+  body           String   @db.Text
+  authorSnapshot Json
+  status         String
+  approvedAt     DateTime?
+  reviewNote     String?
+  riskFlags      Json?
+  moderation     Json?
+  ipLocationLabel String?
+  ipLocationCountryOrRegion String?
+  ipLocationProvince String?
+  ipLocationSource String?
+  ipLocationStatus String?
+  ipLocationResolvedAt DateTime?
+  ipLocationFailureReason String? @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  post    CommunityPost @relation(fields: [postId], references: [id])
+  author  AppUser       @relation(fields: [authorUserId], references: [id])
+  replies CommunityReply[]
+  reports CommunityReport[]
+  notifications CommunityNotification[]
+
+  @@index([postId, status, approvedAt])
+  @@index([authorUserId, status])
+  @@index([postId, createdAt])
+  @@index([authorUserId, createdAt])
+  @@index([ipLocationStatus])
+}
+
+model CommunityReply {
+  id             String   @id @default(cuid())
+  postId         String
+  commentId      String
+  authorUserId   String
+  body           String   @db.Text
+  authorSnapshot Json
+  status         String
+  approvedAt     DateTime?
+  reviewNote     String?
+  riskFlags      Json?
+  moderation     Json?
+  ipLocationLabel String?
+  ipLocationCountryOrRegion String?
+  ipLocationProvince String?
+  ipLocationSource String?
+  ipLocationStatus String?
+  ipLocationResolvedAt DateTime?
+  ipLocationFailureReason String? @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  post    CommunityPost    @relation(fields: [postId], references: [id])
+  comment CommunityComment @relation(fields: [commentId], references: [id])
+  author  AppUser          @relation(fields: [authorUserId], references: [id])
+  reports CommunityReport[]
+  notifications CommunityNotification[]
+
+  @@index([commentId, status, approvedAt])
+  @@index([postId, status, approvedAt])
+  @@index([authorUserId, status])
+  @@index([postId, createdAt])
+  @@index([authorUserId, createdAt])
+  @@index([ipLocationStatus])
+}
+
+model CommunityPostLike {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  post CommunityPost @relation(fields: [postId], references: [id])
+  user AppUser       @relation(fields: [userId], references: [id])
+
+  @@unique([postId, userId])
+  @@index([userId])
+}
+
+model CommunityPostFavorite {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  post CommunityPost @relation(fields: [postId], references: [id])
+  user AppUser       @relation(fields: [userId], references: [id])
+
+  @@unique([postId, userId])
+  @@index([userId])
+}
+
+model CommunityFollow {
+  id              String   @id @default(cuid())
+  followerUserId  String
+  followingUserId String
+  createdAt       DateTime @default(now())
+
+  follower  AppUser @relation("CommunityFollowFollower", fields: [followerUserId], references: [id])
+  following AppUser @relation("CommunityFollowFollowing", fields: [followingUserId], references: [id])
+
+  @@unique([followerUserId, followingUserId])
+  @@index([followerUserId, createdAt])
+  @@index([followingUserId, createdAt])
+}
+
+model CommunityReport {
+  id         String   @id @default(cuid())
+  reporterUserId String
+  targetType String
+  targetKey  String
+  postId     String?
+  commentId  String?
+  replyId    String?
+  reason     String
+  reasonCode String   @default("other")
+  reasonText String?  @db.Text
+  targetSnapshot Json?
+  priority   String   @default("normal")
+  status     String   @default("pending")
+  handledAction String?
+  effectiveForAuthorRisk Boolean @default(false)
+  handledBy  String?
+  handledAt  DateTime?
+  handleNote String?  @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  reporter AppUser           @relation(fields: [reporterUserId], references: [id])
+  post     CommunityPost?    @relation(fields: [postId], references: [id])
+  comment  CommunityComment? @relation(fields: [commentId], references: [id])
+  reply    CommunityReply?   @relation(fields: [replyId], references: [id])
+
+  @@index([targetType, status])
+  @@index([targetKey, status])
+  @@index([reporterUserId, targetKey])
+  @@index([priority, status, createdAt])
+  @@index([effectiveForAuthorRisk])
+  @@index([reporterUserId])
+  @@index([postId])
+  @@index([commentId])
+  @@index([replyId])
+}
+
+model CommunityNotification {
+  id              String   @id @default(cuid())
+  recipientUserId String
+  actorUserId     String?
+  type            String
+  targetType      String
+  targetId        String
+  postId          String?
+  commentId       String?
+  replyId         String?
+  title           String
+  body            String   @db.Text
+  actorSnapshot   Json?
+  readAt          DateTime?
+  createdAt       DateTime @default(now())
+
+  recipient AppUser           @relation(fields: [recipientUserId], references: [id])
+  post      CommunityPost?    @relation(fields: [postId], references: [id])
+  comment   CommunityComment? @relation(fields: [commentId], references: [id])
+  reply     CommunityReply?   @relation(fields: [replyId], references: [id])
+
+  @@index([recipientUserId, readAt, createdAt])
+  @@index([postId])
+  @@index([commentId])
+  @@index([replyId])
+}
+
+model CommunityUserGovernance {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  status      String
+  reason      String   @db.Text
+  note        String?  @db.Text
+  startsAt    DateTime @default(now())
+  expiresAt   DateTime?
+  operatorId  String
+  clearedAt   DateTime?
+  clearedBy   String?
+  clearReason String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user AppUser @relation(fields: [userId], references: [id])
+
+  @@index([status, expiresAt])
+  @@index([userId, status])
+}
+
+model CommunityGovernanceAudit {
+  id                 String   @id @default(cuid())
+  targetType         String
+  targetId           String
+  targetAuthorUserId String?
+  action             String
+  oldStatus          String?
+  newStatus          String?
+  reason             String   @db.Text
+  note               String?  @db.Text
+  operatorId         String
+  createdAt          DateTime @default(now())
+
+  targetAuthor AppUser? @relation(fields: [targetAuthorUserId], references: [id])
+
+  @@index([targetType, targetId])
+  @@index([targetAuthorUserId, createdAt])
+  @@index([action, createdAt])
+}

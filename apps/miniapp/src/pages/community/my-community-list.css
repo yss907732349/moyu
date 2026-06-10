@@ -1,0 +1,87 @@
+.vs-page {
+  min-height: 100vh;
+  background: var(--camp-page-background);
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12rpx;
+}
+
+.page-title {
+  color: var(--camp-text-strong);
+  font-size: 34rpx;
+  font-weight: 900;
+}
+
+.loading-text {
+  color: var(--camp-text-soft);
+  font-size: 22rpx;
+}
+
+.feedback-text {
+  color: var(--camp-gold);
+  font-size: 22rpx;
+  line-height: 1.45;
+}
+
+.empty-state {
+  min-height: 180rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--camp-text-soft);
+  font-size: 22rpx;
+}
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  border: 1rpx solid var(--camp-border) !important;
+  border-radius: 14rpx !important;
+  background: var(--camp-card) !important;
+  box-shadow:
+    inset 1rpx 1rpx 0 rgba(255, 255, 255, 0.08),
+    inset -1rpx -1rpx 0 rgba(0, 0, 0, 0.42),
+    0 2rpx 12rpx rgba(0, 0, 0, 0.32) !important;
+}
+
+.post-title {
+  display: block;
+  max-width: 100%;
+  color: var(--camp-text-strong);
+  font-size: 26rpx;
+  font-weight: 900;
+  overflow-wrap: break-word;
+  white-space: normal;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+.post-desc {
+  display: block;
+  max-width: 100%;
+  color: var(--camp-text-muted);
+  font-size: 22rpx;
+  line-height: 1.55;
+  overflow-wrap: break-word;
+  white-space: normal;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+.post-meta {
+  color: var(--camp-text-soft);
+  font-size: 20rpx;
+  line-height: 1.4;
+}
+
+.status-text {
+  flex-shrink: 0;
+  color: var(--camp-gold);
+  font-size: 20rpx;
+  font-weight: 900;
+}

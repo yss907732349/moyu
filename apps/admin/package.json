@@ -1,0 +1,25 @@
+{
+  "name": "@moyuxia/admin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173",
+    "build": "vue-tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@moyuxia/shared": "workspace:*",
+    "@moyuxia/ui-tokens": "workspace:*",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "vite": "^6.3.5",
+    "vue": "^3.5.14"
+  },
+  "devDependencies": {
+    "@moyuxia/config": "workspace:*",
+    "typescript": "^5.8.3",
+    "vue-tsc": "^2.2.10"
+  }
+}

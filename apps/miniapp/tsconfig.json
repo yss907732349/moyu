@@ -1,0 +1,10 @@
+{
+  "extends": "@moyuxia/config/tsconfig/vue",
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "allowImportingTsExtensions": true,
+    "types": ["@dcloudio/types"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.d.ts"]
+}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+.codex/
+.agent/
+.claude/
+openspec/changes/archive/
+pnpm-lock.yaml
+apps/miniapp/dist/
+apps/admin/dist/
+apps/api/dist/

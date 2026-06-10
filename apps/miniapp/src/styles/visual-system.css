@@ -1,0 +1,1456 @@
+/* ==========================================
+   《摸鱼隐者》小程序全局视觉系统
+   默认工位模式 + 可切换隐者模式 + 方正中文展示字体
+   ========================================== */
+
+/* 方正黑体按官方免费商业发布口径作为统一字体名；当前不内嵌字体文件，避免进入 APP 嵌入授权范围。 */
+
+/* 字体层级变量 */
+:root {
+  /* 品牌/数字/倒计时/badge/入口标题 */
+  --vs-font-founder-hei:
+    "FZHei-B01", "方正黑体_GBK", "方正黑体", "FounderType Hei", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  --vs-font-display: var(--vs-font-founder-hei);
+  /* 兼容历史类名，后续仍统一指向方正展示字体 */
+  --vs-font-pixel: var(--vs-font-display);
+  /* 正文/表单/帖子/错误提示 */
+  --vs-font-body: var(--vs-font-founder-hei);
+}
+
+:root,
+page,
+.vs-mode-workplace,
+.vs-page {
+  /* ==========================================
+     工位模式 Token — 小程序用户端默认外观
+     ========================================== */
+
+  /* 页面底与层级面 */
+  --camp-page: #f5efe4;
+  --camp-bg: #f7f0e6;
+  --camp-surface-low: #fffdf8;
+  --camp-surface: #fffaf1;
+  --camp-surface-high: #f0e4d2;
+  --camp-surface-highest: #e6d8c2;
+  --camp-card: #fffdf8;
+  --camp-page-background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.94) 0%, rgba(245, 239, 228, 0.98) 100%),
+    var(--camp-page);
+  --camp-grid-overlay:
+    linear-gradient(rgba(47, 111, 115, 0.035) 1rpx, transparent 1rpx),
+    linear-gradient(90deg, rgba(154, 106, 22, 0.028) 1rpx, transparent 1rpx);
+
+  /* 文字层级 */
+  --camp-text: #34302a;
+  --camp-text-strong: #17130f;
+  --camp-text-muted: #665c50;
+  --camp-text-soft: #8a7d6d;
+
+  /* 描边 */
+  --camp-border: #d8c9b4;
+  --camp-border-bright: #b99a64;
+
+  /* 主强调色 */
+  --camp-primary: #2f6f73;
+  --camp-primary-hot: #1f5b62;
+  --camp-cyan: #248d92;
+  --camp-gold: #9a6a16;
+  --camp-danger: #b33f32;
+  --camp-success: #2f7d55;
+
+  /* 模式化容器与阴影 */
+  --camp-shadow-card: 0 6rpx 18rpx rgba(17, 24, 39, 0.14);
+  --camp-shadow-pressed: 0 3rpx 9rpx rgba(17, 24, 39, 0.12);
+  --camp-shadow-strong: 0 12rpx 28rpx rgba(17, 24, 39, 0.18);
+  --camp-inset-highlight: inset 1rpx 1rpx 0 rgba(255, 255, 255, 0.76);
+  --camp-inset-lowlight: inset -1rpx -1rpx 0 rgba(17, 24, 39, 0.12);
+  --camp-overlay: rgba(17, 24, 39, 0.4);
+  --camp-modal-bg: #fffdf8;
+  --camp-tab-active-bg: rgba(47, 111, 115, 0.1);
+  --camp-disabled-bg: #e8dfd2;
+  --camp-disabled-text: #9b8f7c;
+  --camp-asset-shade-strong: rgba(255, 253, 248, 0.84);
+  --camp-asset-shade-medium: rgba(255, 250, 241, 0.62);
+  --camp-asset-shade-soft: rgba(255, 250, 241, 0.22);
+  --camp-asset-shade-faint: rgba(255, 250, 241, 0.08);
+  --camp-image-text-shadow: rgba(17, 24, 39, 0.28);
+  --camp-hero-dark-background:
+    linear-gradient(90deg, rgba(255, 253, 248, 0.96) 0%, rgba(255, 250, 241, 0.9) 100%),
+    var(--camp-card);
+
+  /* 兼容历史 vs token，默认指向工位模式 */
+  --vs-color-page-bg: var(--camp-page);
+  --vs-color-page-bg-alt: var(--camp-bg);
+  --vs-color-surface: var(--camp-card);
+  --vs-color-surface-raised: var(--camp-surface);
+  --vs-color-border: var(--camp-border);
+  --vs-color-border-strong: var(--camp-border-bright);
+  --vs-color-shadow: rgba(17, 24, 39, 0.16);
+
+  --vs-color-text-primary: var(--camp-text-strong);
+  --vs-color-text-secondary: var(--camp-text-muted);
+  --vs-color-text-muted: var(--camp-text-soft);
+
+  /* RPG 状态强调色（保留） */
+  --vs-color-gold: #9a6a16;
+  --vs-color-blue: #2196f3;
+  --vs-color-red: #ef4444;
+  --vs-color-green: #10b981;
+  --vs-color-violet: #8b5cf6;
+  --vs-color-orange: #9a6a16;
+  --vs-color-cyan: #06b6d4;
+
+  /* 深色核心元素（banner、徽章、强调块） */
+  --vs-color-ink: #17130f;
+  --vs-color-panel-dark: #fffaf1;
+  --vs-color-rice-paper: #fffdf8;
+
+  /* 强调色 RGB */
+  --vs-color-violet-rgb: 139, 92, 246;
+  --vs-color-green-rgb: 16, 185, 129;
+  --vs-color-yellow-rgb: 154, 106, 22;
+  --vs-color-red-rgb: 239, 68, 68;
+  --vs-color-cyan-rgb: 6, 182, 212;
+
+  /* 像素按钮底座 */
+  --vs-button-bg: #f7a516;
+  --vs-button-bg-pressed: #f7a516;
+  --vs-button-text: #111827;
+  --vs-button-border: #111827;
+  --vs-button-shadow: rgba(17, 24, 39, 0.38);
+  --vs-button-ghost-bg: rgba(47, 111, 115, 0.08);
+  --vs-button-ghost-border: rgba(47, 111, 115, 0.32);
+  --vs-button-ghost-text: #2f6f73;
+}
+
+.vs-mode-hermit {
+  /* 页面底与层级面 */
+  --camp-page: #050508;
+  --camp-bg: #13131b;
+  --camp-surface-low: #1b1b23;
+  --camp-surface: #1f1f27;
+  --camp-surface-high: #292932;
+  --camp-surface-highest: #34343d;
+  --camp-card: #1a1a2e;
+  --camp-page-background:
+    radial-gradient(circle at 50% -80rpx, rgba(189, 0, 255, 0.1), transparent 360rpx),
+    linear-gradient(180deg, #050508 0%, #0b0b12 48%, #13131b 100%);
+  --camp-grid-overlay:
+    linear-gradient(rgba(236, 178, 255, 0.032) 1rpx, transparent 1rpx),
+    linear-gradient(90deg, rgba(0, 219, 233, 0.024) 1rpx, transparent 1rpx);
+
+  /* 文字层级 */
+  --camp-text: #e4e1ed;
+  --camp-text-strong: #ffffff;
+  --camp-text-muted: #d4c0d7;
+  --camp-text-soft: #9d8ba0;
+
+  /* 描边 */
+  --camp-border: #514255;
+  --camp-border-bright: #9d8ba0;
+
+  /* 主强调色 */
+  --camp-primary: #ecb2ff;
+  --camp-primary-hot: #bd00ff;
+  --camp-cyan: #00dbe9;
+  --camp-gold: #e9c400;
+  --camp-danger: #ffb4ab;
+  --camp-success: #47d18c;
+
+  /* 模式化容器与阴影 */
+  --camp-shadow-card: 0 2rpx 12rpx rgba(0, 0, 0, 0.32);
+  --camp-shadow-pressed: 0 2rpx 8rpx rgba(0, 0, 0, 0.26);
+  --camp-shadow-strong: 0 18rpx 28rpx rgba(0, 0, 0, 0.28);
+  --camp-inset-highlight: inset 1rpx 1rpx 0 rgba(255, 255, 255, 0.08);
+  --camp-inset-lowlight: inset -1rpx -1rpx 0 rgba(0, 0, 0, 0.42);
+  --camp-overlay: rgba(0, 0, 0, 0.62);
+  --camp-modal-bg: #1a1a2e;
+  --camp-tab-active-bg: rgba(189, 0, 255, 0.12);
+  --camp-disabled-bg: #25293a;
+  --camp-disabled-text: #6b7194;
+  --camp-asset-shade-strong: rgba(5, 5, 8, 0.88);
+  --camp-asset-shade-medium: rgba(19, 19, 27, 0.64);
+  --camp-asset-shade-soft: rgba(5, 5, 8, 0.28);
+  --camp-asset-shade-faint: rgba(5, 5, 8, 0.04);
+  --camp-image-text-shadow: rgba(0, 0, 0, 0.74);
+  --camp-hero-dark-background:
+    linear-gradient(90deg, rgba(13, 13, 21, 0.96) 0%, rgba(25, 25, 38, 0.92) 100%), var(--camp-card);
+
+  --vs-color-page-bg: #0c0e1a;
+  --vs-color-page-bg-alt: #111827;
+  --vs-color-surface: #141729;
+  --vs-color-surface-raised: #181c32;
+  --vs-color-border: rgba(255, 255, 255, 0.07);
+  --vs-color-border-strong: rgba(255, 255, 255, 0.15);
+  --vs-color-shadow: rgba(0, 0, 0, 0.4);
+
+  --vs-color-text-primary: #e8e4d9;
+  --vs-color-text-secondary: #8b90b0;
+  --vs-color-text-muted: #6b7194;
+
+  --vs-color-ink: #0c0e1a;
+  --vs-color-panel-dark: #141729;
+  --vs-color-rice-paper: #e8e4d9;
+
+  --vs-button-bg: #f7a516;
+  --vs-button-bg-pressed: #f7a516;
+  --vs-button-text: #101217;
+  --vs-button-border: #0a1018;
+  --vs-button-shadow: rgba(17, 24, 39, 0.78);
+  --vs-button-ghost-bg: rgba(247, 165, 22, 0.12);
+  --vs-button-ghost-border: rgba(247, 165, 22, 0.58);
+  --vs-button-ghost-text: #f7a516;
+}
+
+/* 1. 基础页面 */
+.vs-page {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 32rpx 28rpx 140rpx;
+  background: var(--camp-page-background);
+  color: var(--camp-text);
+  font-family: var(--vs-font-body);
+}
+
+/* 展示字体工具类 — 用于标题、金额、倒计时、badge */
+.vs-font-pixel {
+  font-family: var(--vs-font-display);
+}
+
+.vs-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+/* 2. 行与网格布局 */
+.vs-row {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  min-width: 0;
+}
+
+.vs-row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14rpx;
+  min-width: 0;
+}
+
+.vs-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16rpx;
+}
+
+.vs-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14rpx;
+}
+
+/* 3. 像素完美过滤 */
+.vs-pixel-sharp {
+  image-rendering: pixelated !important;
+  image-rendering: crisp-edges !important;
+}
+
+/* 4. RPG 卡牌面板 — 暗色卡片、细描边、深阴影 */
+.vs-panel {
+  box-sizing: border-box;
+  padding: 24rpx;
+  border: 1rpx solid var(--camp-border);
+  border-radius: 12rpx;
+  background: var(--camp-card);
+  box-shadow: var(--camp-shadow-card);
+  transition: all 0.2s ease;
+}
+
+/* 金色高规格 — 忍者卷轴高亮描边 */
+.vs-panel-gold {
+  border-color: rgba(154, 106, 22, 0.42) !important;
+  box-shadow: var(--camp-shadow-card);
+}
+
+.vs-panel-raised {
+  background: var(--camp-surface);
+  border-color: var(--camp-border);
+}
+
+/* 暗色局部面板 — 用于 banner、插画底、强调块 */
+.vs-panel-dark {
+  background: var(--camp-surface);
+  border-color: var(--camp-border);
+  color: var(--camp-text);
+  box-shadow: var(--camp-shadow-card);
+}
+
+/* 交互卡片按压反馈 */
+.vs-panel-interactive:active {
+  transform: translate(1rpx, 1rpx);
+  box-shadow: var(--camp-shadow-pressed);
+}
+
+/* 5. 发光系统 — 暗色底下用克制辉光 */
+.vs-glow-rare {
+  border-color: rgba(139, 92, 246, 0.35) !important;
+  box-shadow:
+    var(--camp-shadow-card),
+    0 0 6rpx rgba(139, 92, 246, 0.1) !important;
+}
+
+.vs-glow-green {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  box-shadow:
+    var(--camp-shadow-card),
+    0 0 6rpx rgba(16, 185, 129, 0.1) !important;
+}
+
+.vs-glow-yellow {
+  border-color: rgba(154, 106, 22, 0.35) !important;
+  box-shadow:
+    var(--camp-shadow-card),
+    0 0 6rpx rgba(154, 106, 22, 0.1) !important;
+}
+
+.vs-glow-red {
+  border-color: rgba(239, 68, 68, 0.35) !important;
+  box-shadow:
+    var(--camp-shadow-card),
+    0 0 6rpx rgba(239, 68, 68, 0.1) !important;
+}
+
+.vs-glow-cyan {
+  border-color: rgba(6, 182, 212, 0.35) !important;
+  box-shadow:
+    var(--camp-shadow-card),
+    0 0 6rpx rgba(6, 182, 212, 0.1) !important;
+}
+
+.vs-glow-blue {
+  border-color: rgba(33, 150, 243, 0.35) !important;
+  box-shadow:
+    var(--camp-shadow-card),
+    0 0 6rpx rgba(33, 150, 243, 0.1) !important;
+}
+
+/* 6. 核心文字层级 */
+.vs-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--camp-text-strong);
+  font-family: var(--vs-font-display);
+}
+
+.vs-subtitle,
+.vs-muted,
+.vs-caption {
+  display: block;
+  color: var(--camp-text-muted);
+  line-height: 1.45;
+  font-family: var(--vs-font-body);
+}
+
+.vs-subtitle {
+  font-size: 26rpx;
+}
+
+.vs-caption {
+  font-size: 24rpx;
+}
+
+/* 7. 标签与按钮 */
+button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 4rpx solid var(--vs-button-border) !important;
+  border-radius: 8rpx !important;
+  background: var(--vs-button-bg);
+  color: var(--vs-button-text);
+  font-family: var(--vs-font-display);
+  font-weight: 900;
+  box-shadow:
+    inset 0 5rpx 0 rgba(255, 255, 255, 0.24),
+    inset 0 -9rpx 0 rgba(0, 0, 0, 0.26),
+    inset 0 0 0 2rpx rgba(255, 255, 255, 0.12),
+    0 7rpx 0 var(--vs-button-shadow),
+    0 11rpx 0 rgba(17, 24, 39, 0.2) !important;
+  text-shadow:
+    2rpx 2rpx 0 rgba(0, 0, 0, 0.34),
+    -1rpx -1rpx 0 rgba(255, 255, 255, 0.14);
+}
+
+button::after {
+  border: 0;
+}
+
+button:active {
+  transform: translateY(6rpx) !important;
+  box-shadow:
+    inset 0 3rpx 0 rgba(255, 255, 255, 0.18),
+    inset 0 -5rpx 0 rgba(0, 0, 0, 0.24),
+    inset 0 0 0 2rpx rgba(255, 255, 255, 0.1),
+    0 2rpx 0 var(--vs-button-shadow),
+    0 5rpx 0 rgba(17, 24, 39, 0.18) !important;
+}
+
+button[disabled] {
+  opacity: 1;
+  filter: saturate(0.6);
+  background: var(--camp-disabled-bg);
+  color: var(--camp-disabled-text);
+  box-shadow:
+    inset 0 4rpx 0 rgba(255, 255, 255, 0.12),
+    inset 0 -8rpx 0 rgba(0, 0, 0, 0.18),
+    0 5rpx 0 rgba(17, 24, 39, 0.2),
+    0 8rpx 0 rgba(17, 24, 39, 0.12) !important;
+  text-shadow: 2rpx 2rpx 0 rgba(0, 0, 0, 0.32);
+}
+
+.vs-chip {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52rpx;
+  max-width: 100%;
+  padding: 0 16rpx;
+  border: 1rpx solid var(--camp-border);
+  border-radius: 8rpx;
+  background: var(--camp-surface);
+  color: var(--camp-text-muted);
+  font-size: 22rpx;
+  line-height: 1.2;
+  font-family: var(--vs-font-body);
+}
+
+.vs-button {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 76rpx;
+  max-width: 100%;
+  padding: 0 28rpx;
+  border: 4rpx solid var(--vs-button-border) !important;
+  border-radius: 8rpx !important;
+  background: var(--vs-button-bg);
+  color: var(--vs-button-text);
+  font-size: 26rpx;
+  font-weight: 900;
+  line-height: 1.2;
+  box-shadow:
+    inset 0 5rpx 0 rgba(255, 255, 255, 0.24),
+    inset 0 -9rpx 0 rgba(0, 0, 0, 0.26),
+    inset 0 0 0 2rpx rgba(255, 255, 255, 0.12),
+    0 7rpx 0 var(--vs-button-shadow),
+    0 11rpx 0 rgba(17, 24, 39, 0.2) !important;
+  font-family: var(--vs-font-display);
+  text-shadow:
+    2rpx 2rpx 0 rgba(0, 0, 0, 0.34),
+    -1rpx -1rpx 0 rgba(255, 255, 255, 0.14);
+  transition:
+    transform 80ms linear,
+    box-shadow 80ms linear,
+    background-color 80ms linear;
+}
+
+.vs-button::after {
+  border: 0;
+}
+
+.vs-button:active {
+  background: var(--vs-button-bg-pressed);
+  transform: translateY(6rpx) !important;
+  box-shadow:
+    inset 0 3rpx 0 rgba(255, 255, 255, 0.18),
+    inset 0 -5rpx 0 rgba(0, 0, 0, 0.24),
+    inset 0 0 0 2rpx rgba(255, 255, 255, 0.1),
+    0 2rpx 0 var(--vs-button-shadow),
+    0 5rpx 0 rgba(17, 24, 39, 0.18) !important;
+}
+
+.vs-button[disabled] {
+  border-color: var(--vs-button-border) !important;
+  background: var(--camp-disabled-bg);
+  color: var(--camp-disabled-text);
+  box-shadow:
+    inset 0 4rpx 0 rgba(255, 255, 255, 0.12),
+    inset 0 -8rpx 0 rgba(0, 0, 0, 0.18),
+    0 5rpx 0 rgba(17, 24, 39, 0.2),
+    0 8rpx 0 rgba(17, 24, 39, 0.12) !important;
+  text-shadow: 2rpx 2rpx 0 rgba(0, 0, 0, 0.32);
+}
+
+/* 8. RPG 血条 (HP) 与蓝条 (MP) */
+.vs-rpg-bar-container {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 3rpx;
+  border: 1rpx solid var(--camp-border);
+  border-radius: 6rpx;
+  background: var(--camp-surface);
+}
+
+.vs-hp-bar {
+  height: 12rpx;
+  border-radius: 4rpx;
+  background: #ef4444;
+  box-shadow: 0 0 3rpx rgba(239, 68, 68, 0.3);
+  transition: width 0.4s ease;
+}
+
+.vs-mp-bar {
+  height: 12rpx;
+  border-radius: 4rpx;
+  background: #a855f7;
+  box-shadow: 0 0 3rpx rgba(168, 85, 247, 0.3);
+  transition: width 0.4s ease;
+}
+
+/* 9. 吐槽气泡 — GameBoy 经典米黄粗黑描边 */
+.vs-bubble {
+  position: relative;
+  padding: 12rpx 18rpx;
+  border: 3rpx solid #000000;
+  border-radius: 10rpx;
+  background: #f0ead6;
+  color: #000000;
+  font-size: 20rpx;
+  font-weight: 700;
+  line-height: 1.4;
+  animation: vs-float 2.5s ease-in-out infinite;
+  box-shadow: 2rpx 2rpx 0px rgba(0, 0, 0, 0.4);
+}
+
+.vs-bubble::after,
+.vs-bubble::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 30rpx;
+  width: 0;
+  height: 0;
+  border: solid transparent;
+}
+
+.vs-bubble::after {
+  border-color: rgba(240, 234, 214, 0);
+  border-top-color: #f0ead6;
+  border-width: 8rpx;
+  margin-left: -8rpx;
+}
+
+.vs-bubble::before {
+  border-color: rgba(0, 0, 0, 0);
+  border-top-color: #000000;
+  border-width: 11rpx;
+  margin-left: -11rpx;
+  z-index: -1;
+}
+
+/* 10. 古朴木纹底板 */
+.vs-scroll-covenant {
+  background: var(--camp-surface) !important;
+  border: 1rpx solid var(--camp-border) !important;
+  box-shadow: var(--camp-shadow-card) !important;
+}
+
+/* 11. 文本截断与长文本防溢出 */
+
+/* 单行省略（用于按钮、tab、短标签） */
+.vs-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vs-clamp-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 长文本防溢出（用于用户输入和服务端长文本） */
+.camp-text-breakable {
+  display: block;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+/* 适用场景：
+   - 帖子标题、正文、摘要
+   - 评论、回复正文
+   - 日报/文章标题和摘要
+   - 补给标题和说明
+   - 订单标签
+   - 错误提示和审核提示
+
+   不适用场景：
+   - 按钮文案、tab 文案
+   - 头像昵称单行展示
+   - 状态短标签
+*/
+
+/* 12. 营地 UI 可复用组件基底 */
+
+/* 页面背景：干净深色 + 克制氛围光 */
+.camp-page-bg {
+  background: var(--camp-page-background);
+}
+
+/* 像素卡片基底 */
+.camp-card {
+  box-sizing: border-box;
+  padding: 18rpx 24rpx;
+  border: 1rpx solid var(--camp-border);
+  border-radius: 12rpx;
+  background: var(--camp-card);
+  box-shadow: var(--camp-inset-highlight), var(--camp-inset-lowlight), var(--camp-shadow-card);
+}
+
+/* 信息流卡片基底 */
+.camp-feed-card {
+  box-sizing: border-box;
+  padding: 20rpx;
+  border: 1rpx solid var(--camp-border);
+  border-radius: 12rpx;
+  background: var(--camp-card);
+  box-shadow: var(--camp-inset-highlight), var(--camp-inset-lowlight), var(--camp-shadow-card);
+}
+
+/* 三档卡片层级：重点像素框必须显式 opt-in，不挂到基础面板默认类 */
+.vs-pixel-frame-primary {
+  position: relative;
+  border: 3rpx solid rgba(47, 111, 115, 0.48) !important;
+  border-radius: 12rpx !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0)), var(--camp-card) !important;
+  box-shadow:
+    0 0 0 2rpx rgba(255, 253, 248, 0.92),
+    0 0 0 5rpx rgba(47, 111, 115, 0.1),
+    var(--camp-inset-highlight),
+    var(--camp-inset-lowlight),
+    var(--camp-shadow-strong) !important;
+}
+
+.vs-pixel-frame-gold {
+  border-color: rgba(154, 106, 22, 0.62) !important;
+  box-shadow:
+    0 0 0 2rpx rgba(255, 253, 248, 0.92),
+    0 0 0 5rpx rgba(154, 106, 22, 0.14),
+    var(--camp-inset-highlight),
+    var(--camp-inset-lowlight),
+    var(--camp-shadow-strong) !important;
+}
+
+.vs-hero-frame-host {
+  position: relative;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 16rpx !important;
+  box-shadow:
+    var(--camp-inset-highlight), var(--camp-inset-lowlight), var(--camp-shadow-strong) !important;
+}
+
+.vs-hero-frame-layer,
+.vs-hero-frame-edge,
+.vs-hero-frame-corner {
+  position: absolute;
+  pointer-events: none;
+}
+
+.vs-hero-frame-layer {
+  inset: 0;
+  z-index: 6;
+}
+
+.vs-hero-frame-edge {
+  background: linear-gradient(180deg, #5d3b78 0%, #3a244e 58%, #1f1729 100%);
+  box-shadow:
+    inset 1rpx 1rpx 0 rgba(255, 229, 174, 0.26),
+    inset -1rpx -1rpx 0 rgba(17, 11, 24, 0.76);
+  opacity: 0.9;
+}
+
+.vs-hero-frame-top {
+  top: -1rpx;
+  left: 36rpx;
+  right: 36rpx;
+  height: 9rpx;
+}
+
+.vs-hero-frame-bottom {
+  left: 36rpx;
+  right: 36rpx;
+  bottom: -1rpx;
+  height: 9rpx;
+  transform: rotate(180deg);
+}
+
+.vs-hero-frame-left {
+  top: 36rpx;
+  bottom: 36rpx;
+  left: -1rpx;
+  width: 9rpx;
+}
+
+.vs-hero-frame-right {
+  top: 36rpx;
+  right: -1rpx;
+  bottom: 36rpx;
+  width: 9rpx;
+  transform: rotate(180deg);
+}
+
+.vs-hero-frame-corner {
+  width: 8rpx;
+  height: 8rpx;
+  background: transparent;
+  box-shadow:
+    16rpx 0 0 #5d3b78,
+    24rpx 0 0 #422b59,
+    8rpx 8rpx 0 #5d3b78,
+    16rpx 8rpx 0 #4c3266,
+    24rpx 8rpx 0 #2b2038,
+    0 16rpx 0 #5d3b78,
+    8rpx 16rpx 0 #422b59,
+    16rpx 16rpx 0 #2b2038,
+    24rpx 16rpx 0 #18101f,
+    0 24rpx 0 #422b59,
+    8rpx 24rpx 0 #2b2038,
+    16rpx 24rpx 0 #18101f;
+  filter: drop-shadow(1rpx 1rpx 0 rgba(0, 0, 0, 0.38));
+}
+
+.vs-hero-corner-tl {
+  top: -6rpx;
+  left: -6rpx;
+}
+
+.vs-hero-corner-tr {
+  top: -6rpx;
+  right: -6rpx;
+  transform: rotate(90deg);
+}
+
+.vs-hero-corner-br {
+  right: -6rpx;
+  bottom: -6rpx;
+  transform: rotate(180deg);
+}
+
+.vs-hero-corner-bl {
+  bottom: -6rpx;
+  left: -6rpx;
+  transform: rotate(270deg);
+}
+
+.vs-card-raised {
+  box-sizing: border-box;
+  border: 1rpx solid var(--camp-border) !important;
+  border-radius: 12rpx !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0)), var(--camp-card) !important;
+  box-shadow:
+    var(--camp-inset-highlight), var(--camp-inset-lowlight), var(--camp-shadow-card) !important;
+}
+
+.vs-card-raised:active,
+.vs-card-pressable:active {
+  transform: translate(1rpx, 1rpx);
+  box-shadow:
+    var(--camp-inset-highlight), var(--camp-inset-lowlight), var(--camp-shadow-pressed) !important;
+}
+
+.vs-card-flat {
+  box-sizing: border-box;
+  border: 1rpx solid var(--camp-border) !important;
+  border-radius: 8rpx !important;
+  background: var(--camp-surface) !important;
+  box-shadow: none !important;
+}
+
+/* 激活态卡片 */
+.camp-card-active {
+  border-color: rgba(47, 111, 115, 0.5);
+  box-shadow:
+    var(--camp-inset-highlight),
+    var(--camp-inset-lowlight),
+    0 0 16rpx rgba(47, 111, 115, 0.16);
+}
+
+/* 金色按钮 */
+.camp-button-gold {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60rpx;
+  padding: 0 24rpx;
+  border: 1rpx solid var(--vs-button-border);
+  border-radius: 6rpx;
+  background: var(--vs-button-bg);
+  color: var(--vs-button-text);
+  font-size: 26rpx;
+  font-weight: 700;
+  font-family: var(--vs-font-display);
+  box-shadow:
+    inset 1rpx 1rpx 0 rgba(255, 255, 255, 0.34),
+    inset -1rpx -4rpx 0 rgba(0, 0, 0, 0.22),
+    0 5rpx 0 var(--vs-button-shadow);
+  transition: all 0.2s ease;
+}
+
+.camp-button-gold:active {
+  transform: translateY(2rpx);
+  box-shadow:
+    inset 1rpx 1rpx 0 rgba(255, 255, 255, 0.34),
+    inset -1rpx -4rpx 0 rgba(0, 0, 0, 0.22),
+    0 3rpx 0 var(--vs-button-shadow);
+}
+
+/* 紫色标签（激活 tab） */
+.camp-tab-active {
+  box-sizing: border-box;
+  padding: 8rpx 16rpx;
+  border: 1rpx solid rgba(47, 111, 115, 0.36);
+  border-radius: 6rpx;
+  background: var(--camp-tab-active-bg);
+  color: var(--camp-primary);
+  font-size: 24rpx;
+  font-family: var(--vs-font-display);
+  box-shadow: 0 0 8rpx rgba(47, 111, 115, 0.12);
+}
+
+/* 青色状态标签 */
+.camp-tag-cyan {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 12rpx;
+  border: 1rpx solid rgba(0, 219, 233, 0.4);
+  border-radius: 4rpx;
+  background: rgba(0, 219, 233, 0.08);
+  color: var(--camp-cyan);
+  font-size: 20rpx;
+  font-family: var(--vs-font-body);
+}
+
+/* 输入框 */
+.camp-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 60rpx;
+  padding: 12rpx 16rpx;
+  border: 1rpx solid var(--camp-border);
+  border-radius: 8rpx;
+  background: var(--camp-surface);
+  color: var(--camp-text);
+  font-size: 26rpx;
+  font-family: var(--vs-font-body);
+  transition: border-color 0.2s ease;
+}
+
+.camp-input:focus {
+  border-color: rgba(47, 111, 115, 0.54);
+  outline: none;
+}
+
+/* 状态面板 */
+.camp-state-panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  padding: 40rpx 32rpx;
+  border: 1rpx solid var(--camp-border);
+  border-radius: 12rpx;
+  background: var(--camp-card);
+  text-align: center;
+  box-shadow: var(--camp-shadow-card);
+}
+
+.camp-state-panel-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--camp-text);
+  font-family: var(--vs-font-display);
+}
+
+.camp-state-panel-desc {
+  font-size: 24rpx;
+  color: var(--camp-text-muted);
+  font-family: var(--vs-font-body);
+  line-height: 1.5;
+}
+
+/* 12. 图片资产预留框 — 风格化 fallback，不展示开发占位文本 */
+.vs-asset-placeholder {
+  border: 1rpx dashed var(--camp-border);
+  border-radius: 8rpx;
+  background: linear-gradient(135deg, var(--camp-surface) 0%, var(--camp-surface-high) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.vs-asset-placeholder text {
+  color: rgba(255, 255, 255, 0);
+  font-size: 0;
+  /* 不展示开发占位文本 */
+}
+
+.vs-illustration-fallback {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1rpx solid var(--camp-border);
+  border-radius: 10rpx;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.52), rgba(240, 228, 210, 0.72)),
+    var(--camp-surface);
+}
+
+.vs-illustration-fallback::before {
+  content: "";
+  position: absolute;
+  inset: 12rpx;
+  border: 1rpx solid rgba(47, 111, 115, 0.08);
+  border-radius: 8rpx;
+}
+
+.vs-illustration-fallback::after {
+  content: "";
+  position: absolute;
+  left: 12rpx;
+  right: 12rpx;
+  bottom: 18rpx;
+  height: 20rpx;
+  border-radius: 2rpx;
+  background: linear-gradient(90deg, transparent, rgba(154, 106, 22, 0.18), transparent);
+}
+
+.vs-fallback-work {
+  background:
+    linear-gradient(150deg, rgba(154, 106, 22, 0.12), transparent 42%),
+    linear-gradient(135deg, #fffdf8, #f0e4d2);
+}
+
+.vs-fallback-hidden {
+  background:
+    linear-gradient(150deg, rgba(47, 111, 115, 0.14), transparent 46%),
+    linear-gradient(135deg, #fffdf8, #e7dac6);
+  filter: saturate(0.72);
+}
+
+.vs-fallback-community {
+  background:
+    linear-gradient(135deg, rgba(47, 111, 115, 0.12), transparent 44%),
+    linear-gradient(145deg, #fffdf8, #efe2ce);
+}
+
+.vs-fallback-supply {
+  background:
+    linear-gradient(140deg, rgba(154, 106, 22, 0.14), transparent 46%),
+    linear-gradient(135deg, #fff7df, #efe1cc);
+}
+
+.vs-fallback-ledger {
+  background:
+    linear-gradient(140deg, rgba(36, 141, 146, 0.12), transparent 48%),
+    linear-gradient(135deg, #f6fbf9, #e9ddcb);
+}
+
+.vs-fallback-error {
+  background:
+    linear-gradient(140deg, rgba(179, 63, 50, 0.12), transparent 48%),
+    linear-gradient(135deg, #fff7f2, #ead9cc);
+}
+
+.vs-fallback-empty,
+.vs-fallback-loading,
+.vs-fallback-first-run,
+.vs-fallback-login,
+.vs-fallback-profile,
+.vs-fallback-faction,
+.vs-fallback-daily,
+.vs-fallback-community-thumb {
+  background:
+    linear-gradient(140deg, rgba(36, 141, 146, 0.1), transparent 48%),
+    linear-gradient(135deg, #fffdf8, #efe2ce);
+}
+
+.vs-semantic-icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 58%;
+  height: 58%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8rpx;
+  border: 1rpx solid rgba(47, 111, 115, 0.16);
+  background: rgba(47, 111, 115, 0.06);
+  box-shadow: inset 0 0 16rpx rgba(255, 255, 255, 0.36);
+}
+
+.vs-semantic-icon::before,
+.vs-semantic-icon::after {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.vs-icon-role::before {
+  width: 44%;
+  height: 44%;
+  border: 3rpx solid #9a6a16;
+  border-radius: 50%;
+}
+
+.vs-icon-role::after {
+  bottom: 16%;
+  width: 58%;
+  height: 22%;
+  border-radius: 999rpx 999rpx 4rpx 4rpx;
+  background: rgba(154, 106, 22, 0.86);
+}
+
+.vs-icon-work-settings::before {
+  width: 54%;
+  height: 54%;
+  border: 4rpx solid #38bdf8;
+  border-radius: 50%;
+}
+
+.vs-icon-work-settings::after {
+  width: 16%;
+  height: 70%;
+  border-radius: 4rpx;
+  background: #38bdf8;
+  transform: rotate(45deg);
+}
+
+.vs-icon-posts::before,
+.vs-icon-daily::before {
+  width: 56%;
+  height: 58%;
+  border: 3rpx solid #b4a0d6;
+  border-radius: 5rpx;
+}
+
+.vs-icon-posts::after,
+.vs-icon-daily::after {
+  width: 36%;
+  height: 4rpx;
+  background: #b4a0d6;
+  box-shadow: 0 12rpx 0 #b4a0d6;
+}
+
+.vs-icon-favorites::before {
+  width: 54%;
+  height: 54%;
+  border-radius: 8rpx;
+  background: #9a6a16;
+  transform: rotate(45deg);
+}
+
+.vs-icon-favorites::after {
+  top: 19%;
+  width: 22%;
+  height: 34%;
+  border-radius: 999rpx;
+  background: #9a6a16;
+  box-shadow: 18rpx 0 0 #9a6a16;
+}
+
+.vs-icon-messages::before {
+  width: 62%;
+  height: 44%;
+  border: 3rpx solid #10b981;
+  border-radius: 8rpx;
+}
+
+.vs-icon-messages::after {
+  right: 20%;
+  bottom: 22%;
+  width: 16%;
+  height: 16%;
+  border-left: 3rpx solid #10b981;
+  border-bottom: 3rpx solid #10b981;
+  transform: skew(-18deg);
+}
+
+.vs-icon-community::before {
+  width: 58%;
+  height: 58%;
+  border: 3rpx solid #b4a0d6;
+  border-radius: 50%;
+}
+
+.vs-icon-community::after {
+  width: 46%;
+  height: 4rpx;
+  background: #b4a0d6;
+  box-shadow:
+    0 -14rpx 0 -1rpx #b4a0d6,
+    0 14rpx 0 -1rpx #b4a0d6;
+}
+
+.vs-icon-ledger::before {
+  width: 58%;
+  height: 62%;
+  border: 3rpx solid #9a6a16;
+  border-radius: 6rpx;
+}
+
+.vs-icon-ledger::after {
+  width: 36%;
+  height: 4rpx;
+  background: #9a6a16;
+  box-shadow:
+    0 12rpx 0 #9a6a16,
+    0 24rpx 0 #9a6a16;
+}
+
+.vs-icon-supply::before,
+.vs-icon-canteen::before {
+  width: 54%;
+  height: 40%;
+  border: 3rpx solid #9a6a16;
+  border-radius: 0 0 999rpx 999rpx;
+}
+
+.vs-icon-supply::after,
+.vs-icon-canteen::after {
+  top: 20%;
+  width: 46%;
+  height: 3rpx;
+  background: #9a6a16;
+}
+
+.vs-icon-afternoon::before {
+  width: 46%;
+  height: 52%;
+  border: 3rpx solid #b4a0d6;
+  border-radius: 6rpx 6rpx 12rpx 12rpx;
+}
+
+.vs-icon-afternoon::after {
+  right: 18%;
+  top: 34%;
+  width: 22%;
+  height: 20%;
+  border: 3rpx solid #b4a0d6;
+  border-left: 0;
+  border-radius: 0 999rpx 999rpx 0;
+}
+
+.vs-icon-commute::before {
+  width: 66%;
+  height: 36%;
+  border: 3rpx solid #38bdf8;
+  border-radius: 8rpx;
+}
+
+.vs-icon-commute::after {
+  bottom: 18%;
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 42rpx 0 0 #38bdf8;
+}
+
+.vs-icon-canteen,
+.vs-icon-afternoon,
+.vs-icon-commute {
+  width: 82%;
+  height: 82%;
+  border: 0;
+  border-radius: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  box-shadow: none;
+}
+
+.vs-icon-canteen {
+  background-image: url("/static/icons/survival-canteen-rpg-v2.png");
+}
+
+.vs-icon-afternoon {
+  background-image: url("/static/icons/survival-afternoon-rpg-v2.png");
+}
+
+.vs-icon-commute {
+  background-image: url("/static/icons/survival-commute-rpg-v2.png");
+}
+
+.vs-icon-canteen::before,
+.vs-icon-canteen::after,
+.vs-icon-afternoon::before,
+.vs-icon-afternoon::after,
+.vs-icon-commute::before,
+.vs-icon-commute::after {
+  display: none;
+}
+
+.vs-icon-countdown::before,
+.vs-icon-loading::before {
+  width: 58%;
+  height: 58%;
+  border: 3rpx solid #4cc7d8;
+  border-radius: 50%;
+}
+
+.vs-icon-countdown::after,
+.vs-icon-loading::after {
+  width: 4rpx;
+  height: 34%;
+  background: #4cc7d8;
+  transform-origin: bottom center;
+  transform: translateY(-10%) rotate(38deg);
+}
+
+.vs-icon-login::before {
+  width: 50%;
+  height: 50%;
+  border: 3rpx solid #9a6a16;
+  border-radius: 50%;
+}
+
+.vs-icon-login::after {
+  right: 16%;
+  width: 30%;
+  height: 4rpx;
+  background: #9a6a16;
+  box-shadow:
+    10rpx -8rpx 0 -2rpx #9a6a16,
+    10rpx 8rpx 0 -2rpx #9a6a16;
+}
+
+.vs-icon-empty::before {
+  width: 58%;
+  height: 36%;
+  border: 3rpx solid #8b90b0;
+  border-radius: 6rpx;
+}
+
+.vs-icon-empty::after {
+  top: 28%;
+  width: 34%;
+  height: 3rpx;
+  background: #8b90b0;
+}
+
+.vs-icon-error::before {
+  width: 54%;
+  height: 54%;
+  border: 3rpx solid #ef4444;
+  border-radius: 50%;
+}
+
+.vs-icon-error::after {
+  width: 4rpx;
+  height: 34%;
+  background: #ef4444;
+  box-shadow: 0 24rpx 0 -1rpx #ef4444;
+}
+
+.vs-icon-degraded::before {
+  width: 56%;
+  height: 56%;
+  border: 3rpx solid #9a6a16;
+  border-radius: 8rpx;
+}
+
+.vs-icon-degraded::after {
+  width: 42%;
+  height: 4rpx;
+  background: #9a6a16;
+  transform: rotate(-24deg);
+}
+
+.vs-mode-hermit .vs-panel {
+  border-radius: 16rpx;
+}
+
+.vs-mode-hermit .vs-panel-gold {
+  border-color: rgba(154, 106, 22, 0.3) !important;
+}
+
+.vs-mode-hermit .vs-rpg-bar-container {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.vs-mode-hermit .vs-pixel-frame-primary {
+  border-color: rgba(236, 178, 255, 0.62) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)), var(--camp-card) !important;
+  box-shadow:
+    0 0 0 2rpx rgba(5, 5, 8, 0.95),
+    0 0 0 5rpx rgba(236, 178, 255, 0.16),
+    inset 0 0 0 2rpx rgba(255, 255, 255, 0.08),
+    inset 0 -8rpx 0 rgba(0, 0, 0, 0.26),
+    0 8rpx 0 rgba(0, 0, 0, 0.34),
+    0 18rpx 28rpx rgba(0, 0, 0, 0.28) !important;
+}
+
+.vs-mode-hermit .vs-pixel-frame-gold {
+  border-color: rgba(154, 106, 22, 0.72) !important;
+  box-shadow:
+    0 0 0 2rpx rgba(5, 5, 8, 0.95),
+    0 0 0 5rpx rgba(154, 106, 22, 0.14),
+    inset 0 0 0 2rpx rgba(255, 255, 255, 0.08),
+    inset 0 -8rpx 0 rgba(0, 0, 0, 0.26),
+    0 8rpx 0 rgba(0, 0, 0, 0.34),
+    0 18rpx 28rpx rgba(0, 0, 0, 0.28) !important;
+}
+
+.vs-mode-hermit .vs-card-raised {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)), var(--camp-card) !important;
+  box-shadow:
+    inset 1rpx 1rpx 0 rgba(255, 255, 255, 0.08),
+    inset -1rpx -1rpx 0 rgba(0, 0, 0, 0.42),
+    0 4rpx 12rpx rgba(0, 0, 0, 0.28) !important;
+}
+
+.vs-mode-hermit .vs-card-raised:active,
+.vs-mode-hermit .vs-card-pressable:active {
+  box-shadow:
+    inset 1rpx 1rpx 0 rgba(255, 255, 255, 0.08),
+    inset -1rpx -1rpx 0 rgba(0, 0, 0, 0.42),
+    0 2rpx 8rpx rgba(0, 0, 0, 0.26) !important;
+}
+
+.vs-mode-hermit .camp-card,
+.vs-mode-hermit .camp-feed-card {
+  box-shadow:
+    inset 1rpx 1rpx 0 rgba(255, 255, 255, 0.08),
+    inset -1rpx -1rpx 0 rgba(0, 0, 0, 0.42),
+    0 2rpx 12rpx rgba(0, 0, 0, 0.32);
+}
+
+.vs-mode-hermit .camp-card-active {
+  border-color: rgba(236, 178, 255, 0.54);
+  box-shadow:
+    inset 1rpx 1rpx 0 rgba(255, 255, 255, 0.1),
+    inset -1rpx -1rpx 0 rgba(0, 0, 0, 0.42),
+    0 0 16rpx rgba(189, 0, 255, 0.34);
+}
+
+.vs-mode-hermit .camp-tab-active {
+  border-color: rgba(236, 178, 255, 0.54);
+  background: rgba(189, 0, 255, 0.12);
+  box-shadow: 0 0 8rpx rgba(189, 0, 255, 0.2);
+}
+
+.vs-mode-hermit .camp-input:focus {
+  border-color: rgba(236, 178, 255, 0.54);
+}
+
+.vs-mode-hermit .vs-illustration-fallback {
+  background: linear-gradient(135deg, rgba(24, 28, 50, 0.94), rgba(8, 12, 26, 0.96)), #141729;
+}
+
+.vs-mode-hermit .vs-illustration-fallback::before {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.vs-mode-hermit .vs-illustration-fallback::after {
+  background: linear-gradient(90deg, transparent, rgba(154, 106, 22, 0.16), transparent);
+}
+
+.vs-mode-hermit .vs-fallback-work {
+  background:
+    linear-gradient(150deg, rgba(154, 106, 22, 0.15), transparent 42%),
+    linear-gradient(135deg, #181c32, #090c18);
+}
+
+.vs-mode-hermit .vs-fallback-hidden {
+  background:
+    linear-gradient(150deg, rgba(107, 113, 148, 0.24), transparent 46%),
+    linear-gradient(135deg, #121626, #090c18);
+  filter: saturate(0.72);
+}
+
+.vs-mode-hermit .vs-fallback-community {
+  background:
+    linear-gradient(135deg, rgba(167, 139, 250, 0.14), transparent 44%),
+    linear-gradient(145deg, #15182b, #090c18);
+}
+
+.vs-mode-hermit .vs-fallback-supply {
+  background:
+    linear-gradient(140deg, rgba(154, 106, 22, 0.14), transparent 46%),
+    linear-gradient(135deg, #191827, #090c18);
+}
+
+.vs-mode-hermit .vs-fallback-ledger {
+  background:
+    linear-gradient(140deg, rgba(56, 189, 248, 0.12), transparent 48%),
+    linear-gradient(135deg, #121a2a, #090c18);
+}
+
+.vs-mode-hermit .vs-fallback-error {
+  background:
+    linear-gradient(140deg, rgba(239, 68, 68, 0.16), transparent 48%),
+    linear-gradient(135deg, #1d1420, #090c18);
+}
+
+.vs-mode-hermit .vs-fallback-empty,
+.vs-mode-hermit .vs-fallback-loading,
+.vs-mode-hermit .vs-fallback-first-run,
+.vs-mode-hermit .vs-fallback-login,
+.vs-mode-hermit .vs-fallback-profile,
+.vs-mode-hermit .vs-fallback-faction,
+.vs-mode-hermit .vs-fallback-daily,
+.vs-mode-hermit .vs-fallback-community-thumb {
+  background:
+    linear-gradient(140deg, rgba(76, 199, 216, 0.1), transparent 48%),
+    linear-gradient(135deg, #181c32, #090c18);
+}
+
+.vs-mode-hermit .vs-semantic-icon {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(232, 228, 217, 0.08);
+  box-shadow: inset 0 0 16rpx rgba(255, 255, 255, 0.04);
+}
+
+/* ==========================================
+   CSS 关键帧动效
+   ========================================== */
+
+@keyframes vs-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4rpx);
+  }
+}
+
+.vs-breathe {
+  animation: vs-float 3s ease-in-out infinite;
+}

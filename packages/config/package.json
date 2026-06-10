@@ -1,0 +1,19 @@
+{
+  "name": "@moyuxia/config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tsconfig/base": "./tsconfig/base.json",
+    "./tsconfig/vue": "./tsconfig/vue.json",
+    "./tsconfig/nest": "./tsconfig/nest.json"
+  },
+  "scripts": {
+    "build": "echo config package has no build step",
+    "typecheck": "echo config package has no typecheck step",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "摸鱼隐者",
+  "appid": "__UNI__MOYUXIA",
+  "description": "摸鱼隐者 MVP 内测小程序",
+  "versionName": "0.1.0",
+  "versionCode": "100",
+  "mp-weixin": {
+    "appid": "wx80a70cde6fa503db",
+    "setting": {
+      "urlCheck": false,
+      "ignoreDevUnusedFiles": true,
+      "ignoreUploadUnusedFiles": true
+    },
+    "usingComponents": true
+  }
+}

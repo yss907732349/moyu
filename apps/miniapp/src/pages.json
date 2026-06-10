@@ -1,0 +1,231 @@
+{
+  "globalStyle": {
+    "navigationBarBackgroundColor": "#f7f3ea",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "摸鱼隐者",
+    "backgroundColor": "#f5efe4"
+  },
+  "pages": [
+    {
+      "path": "pages/home/index",
+      "style": {
+        "enablePullDownRefresh": true,
+        "navigationBarTitleText": "摸鱼隐者"
+      }
+    },
+    {
+      "path": "pages/community/index",
+      "style": {
+        "enablePullDownRefresh": true,
+        "navigationBarTitleText": "隐者营地"
+      }
+    },
+    {
+      "path": "pages/community/post",
+      "style": {
+        "navigationBarTitleText": "发布悬赏令"
+      }
+    },
+    {
+      "path": "pages/community/detail",
+      "style": {
+        "navigationBarTitleText": "帖子详情"
+      }
+    },
+    {
+      "path": "pages/community/profile",
+      "style": {
+        "navigationBarTitleText": "隐者主页"
+      }
+    },
+    {
+      "path": "pages/community/follow-list",
+      "style": {
+        "navigationBarTitleText": "关注列表"
+      }
+    },
+    {
+      "path": "pages/community/my-posts",
+      "style": {
+        "navigationBarTitleText": "我的论坛"
+      }
+    },
+    {
+      "path": "pages/community/my-posts-pending",
+      "style": {
+        "navigationBarTitleText": "审核中帖子"
+      }
+    },
+    {
+      "path": "pages/community/my-posts-reviewed",
+      "style": {
+        "navigationBarTitleText": "已审核帖子"
+      }
+    },
+    {
+      "path": "pages/community/my-comments",
+      "style": {
+        "navigationBarTitleText": "我的评论"
+      }
+    },
+    {
+      "path": "pages/community/my-replies",
+      "style": {
+        "navigationBarTitleText": "我的回复"
+      }
+    },
+    {
+      "path": "pages/community/my-favorites",
+      "style": {
+        "navigationBarTitleText": "收藏帖子"
+      }
+    },
+    {
+      "path": "pages/community/messages",
+      "style": {
+        "navigationBarTitleText": "社区消息"
+      }
+    },
+    {
+      "path": "pages/community/policy",
+      "style": {
+        "navigationBarTitleText": "社区规则"
+      }
+    },
+    {
+      "path": "pages/daily-content/index",
+      "style": {
+        "navigationBarTitleText": "隐者日报"
+      }
+    },
+    {
+      "path": "pages/daily-content/list",
+      "style": {
+        "navigationBarTitleText": "日报板块"
+      }
+    },
+    {
+      "path": "pages/daily-content/detail",
+      "style": {
+        "navigationBarTitleText": "日报文章"
+      }
+    },
+    {
+      "path": "pages/world-intel/list",
+      "style": {
+        "navigationBarTitleText": "大陆新闻"
+      }
+    },
+    {
+      "path": "pages/world-intel/detail",
+      "style": {
+        "navigationBarTitleText": "大陆新闻详情"
+      }
+    },
+    {
+      "path": "pages/stealth-workbench/index",
+      "style": {
+        "navigationBarTitleText": "工作表"
+      }
+    },
+    {
+      "path": "pages/stealth-workbench/daily-list",
+      "style": {
+        "navigationBarTitleText": "内部日报"
+      }
+    },
+    {
+      "path": "pages/stealth-workbench/daily-detail",
+      "style": {
+        "navigationBarTitleText": "日报记录"
+      }
+    },
+    {
+      "path": "pages/stealth-workbench/forum",
+      "style": {
+        "navigationBarTitleText": "讨论记录"
+      }
+    },
+    {
+      "path": "pages/stealth-workbench/forum-detail",
+      "style": {
+        "navigationBarTitleText": "记录详情"
+      }
+    },
+    {
+      "path": "pages/supply-center/index",
+      "style": {
+        "navigationBarTitleText": "补给铺"
+      }
+    },
+    {
+      "path": "pages/webview/index",
+      "style": {
+        "navigationBarTitleText": "补给落地页"
+      }
+    },
+    {
+      "path": "pages/comics/index",
+      "style": {
+        "navigationBarTitleText": "隐者漫画"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "enablePullDownRefresh": true,
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/profile/role",
+      "style": {
+        "navigationBarTitleText": "我的角色"
+      }
+    },
+    {
+      "path": "pages/work-profile/settings",
+      "style": {
+        "navigationBarTitleText": "薪资时间"
+      }
+    },
+    {
+      "path": "pages/accounting-ledger/record",
+      "style": {
+        "navigationBarTitleText": "生存账本"
+      }
+    },
+    {
+      "path": "pages/accounting-ledger/index",
+      "style": {
+        "navigationBarTitleText": "摸鱼账本"
+      }
+    }
+  ],
+  "tabBar": {
+    "color": "#6f655a",
+    "selectedColor": "#9a6a16",
+    "backgroundColor": "#fbf8f1",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/community/index",
+        "text": "社区",
+        "iconPath": "static/tabbar/community.png",
+        "selectedIconPath": "static/tabbar/community-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/profile.png",
+        "selectedIconPath": "static/tabbar/profile-active.png"
+      }
+    ]
+  }
+}
